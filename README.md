@@ -29,3 +29,5 @@ void PW::TextBox::display(){
   // of course, this also works
 }
 ```
+
+Further documentation in the [github wiki](https://github.com/AKArien0/PW-lib/wiki).
