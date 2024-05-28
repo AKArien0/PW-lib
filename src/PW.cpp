@@ -155,7 +155,9 @@ namespace PW{
 	    }
 	}
 
-	    CursorMenu::CursorMenu(int set_pos_x, int set_pos_y, int bound_x, int bound_y, Widget* set_cursor_widget, int set_cursor_origin_x, int set_cursor_origin_y, int set_cursor_step_x, int set_cursor_step_y) : Container(set_pos_x, set_pos_y){
+	    CursorMenu::CursorMenu(int set_pos_x, int set_pos_y, int bound_x, int bound_y, Widget* set_cursor_widget,
+		    int set_cursor_origin_x, int set_cursor_origin_y, int set_cursor_step_x, int set_cursor_step_y,
+		    bool init_instant_callback_is_valid_position) : Container(set_pos_x, set_pos_y){
 		bounds[0] = bound_x;
 		bounds[1] = bound_y;
 		cursor_move_callback = NULL;
@@ -163,6 +165,7 @@ namespace PW{
 		cursor_step_y = set_cursor_step_y;
 		cursor_widget = set_cursor_widget;
 		cursor_widget->add_pos(pos_x, pos_y);
+		instant_callback_is_valid_position = init_instant_callback_is_valid_position;
 	    }
 
 		void CursorMenu::set_cursor_move_callback(void(*set_callback)()){
@@ -204,7 +207,9 @@ namespace PW{
 			    return 2;
 			}
 			children_callbacks[index]();
-			//~ return 1;
+			if (!instant_callback_is_valid_position){
+			    return 1;
+			}
 		    }
 
 		    if (new_pos_x < 0){
@@ -234,6 +239,10 @@ namespace PW{
 
 		void CursorMenu::add_instant_callback(int x, int y, int xx, int yy, void(*callback)()){
 		    add_child(NULL, x, y, xx, yy, callback);
+		}
+
+		void CursorMenu::set_instant_callback_is_valid_position(bool set){
+		    instant_callback_is_valid_position = set;
 		}
 
 		int CursorMenu::get_cursor_x(){
